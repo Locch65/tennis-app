@@ -1,7 +1,8 @@
 const CACHE_NAME = 'myfitp-v3';
 const ASSETS = [
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', (e) => {
