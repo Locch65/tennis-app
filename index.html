@@ -16,12 +16,13 @@
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column; /* Gestione barra servizi fissa in alto */
+            flex-direction: column; 
             height: 100vh;
             overflow: hidden;
             user-select: none;
             font-family: Arial, sans-serif;
             touch-action: auto;
+            background-color: #fafafa;
         }
         iframe {
             border: none;
@@ -29,92 +30,74 @@
             width: 100%;
             touch-action: auto;
         }
-        
-        /* Barra dei Servizi Superiore (Sempre Visibile) */
-        .toolbar-servizi {
-            background-color: #f1f1f1;
-            padding: 10px;
-            display: flex;
-            border-bottom: 1px solid #ccc;
-            justify-content: center;
-        }
 
-        /* Box Istruzioni Integrato */
-        .box-istruzioni {
-            background: #fff3cd; 
-            color: #856404; 
-            padding: 8px 12px; 
-            border-radius: 6px; 
-            font-weight: bold; 
-            font-size: 13px; 
-            border: 1px solid #ffeeba;
+        /* Nuova Barra di Navigazione Inferiore (Bottom Tab Bar) */
+        .bottom-nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
+            height: 65px;
+            background-color: #ffffff;
+            border-top: 1px solid #e0e0e0;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-around;
             align-items: center;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
             box-sizing: border-box;
-            gap: 8px;
-        }
-        .btn-link-istruzioni {
-            background: #856404;
-            color: white;
-            border: none;
-            padding: 4px 12px;
-            font-size: 13px;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-        
-        /* Nuovi bottoni della barra di sincronizzazione */
-        .btn-miei-tornei {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-        .btn-ricerca-lente {
-            color: white;
-            border: none;
-            padding: 4px 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
+            padding-bottom: env(safe-area-inset-bottom, 0px); /* Supporto per iPhone moderni */
         }
 
-        /* Bottone Collegamento Esterno FITP */
-        .btn-link-fitp {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-weight: bold;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
+        .nav-tab {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            text-transform: uppercase;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: #666666;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            height: 100%;
+            gap: 4px;
+            text-decoration: none;
+            transition: color 0.2s, background-color 0.2s;
         }
-        .btn-link-fitp:hover { background: #218838; }
 
-        /* ==========================================================================
-           CONTENITORE UNICO DEL TORNEO (Nascondibile con un solo colpo)
-           ========================================================================== */
+        .nav-tab .tab-icon {
+            font-size: 20px;
+        }
+
+        .nav-tab:active, .nav-tab.attivo {
+            color: #007bff;
+            background-color: #f8f9fa;
+        }
+
+        /* Adattamento aree di contenuto per lasciare spazio alla bottom bar */
+        #area-torneo, #area-ricerca {
+            height: calc(100vh - 65px);
+            padding-bottom: 0;
+            box-sizing: border-box;
+        }
+
         #area-torneo {
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            height: calc(100vh - 59px); /* Sottrae lo spazio della barra servizi superiore */
             position: relative;
+            width: 100%;
+        }
+
+        #area-ricerca {
+            display: none;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 15px;
+            background: #fafafa;
+            overflow: hidden;
             width: 100%;
         }
 
@@ -141,7 +124,6 @@
             flex-grow: 1;
             position: relative;
             background: #fff;
-            padding-bottom: 60px; 
             box-sizing: border-box;
         }
         
@@ -226,17 +208,6 @@
         }
 
         /* --- CONTENITORE SEZIONE DI RICERCA CONTENUTA --- */
-        #area-ricerca {
-            display: none;
-            flex-direction: column;
-            flex-grow: 1;
-            height: calc(100vh - 59px);
-            padding: 15px;
-            box-sizing: border-box;
-            background: #fafafa;
-            overflow: hidden;
-            width: 100%;
-        }
         .ricerca-header {
             display: flex;
             justify-content: space-between;
@@ -427,11 +398,11 @@
             width: 100vw;
             height: 100vh;
             background: rgba(255, 255, 255, 0.85);
-            display: none; /* Nascosto di default */
+            display: none; 
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 9999; /* Sopra a qualsiasi modale o mappa */
+            z-index: 9999; 
             font-family: Arial, sans-serif;
         }
 
@@ -465,17 +436,8 @@
         <div class="loader-testo blink-loading">Ricerca e geocodifica in corso...</div>
     </div>
 
-    <div class="toolbar-servizi">
-        <div class="box-istruzioni">
-            <a href="#" target="_blank" class="btn-link-fitp" id="btn-sito-fitp">Sito FITP</a>
-            <button class="btn-miei-tornei" id="btn-miei-tornei">I Miei Tornei</button>
-            <button class="btn-ricerca-lente" id="btn-ricerca-lente">🔍</button>
-            <button class="btn-link-istruzioni" id="btn-apri-istruzioni">?</button>
-        </div>
-    </div>
-
+    <!-- MAIN AREA: I MIEI TORNEI -->
     <div id="area-torneo">
-        
         <div class="toolbar" id="toolbar-sinistra">
             <div class="header-torneo">
                 <button class="btn-seleziona-torneo" id="btn-cambia-torneo">Caricamento...</button>
@@ -505,6 +467,7 @@
         </div>
     </div>
 
+    <!-- AREA: RICERCA TORNEI -->
     <div id="area-ricerca">
         <div class="ricerca-header">
             <h3 style="font-size:1rem; margin: 0; color: #333;"><span id="contatore-titolo-tornei"></span>Tornei (Piemonte / Torino)</h3>
@@ -618,6 +581,27 @@
         <div id="mappa-container"></div>
     </div>
 
+    <!-- MODERNA BARRA CON TAB IN FONDO ALLA PAGINA -->
+    <nav class="bottom-nav-bar">
+        <a href="https://my.fitp.it/" target="_blank" class="nav-tab" id="btn-sito-fitp">
+            <span class="tab-icon">🌐</span>
+            <span>Sito FITP</span>
+        </a>
+        <button class="nav-tab attivo" id="btn-miei-tornei">
+            <span class="tab-icon">🏆</span>
+            <span>I Miei Tornei</span>
+        </button>
+        <button class="nav-tab" id="btn-ricerca-lente">
+            <span class="tab-icon">🔍</span>
+            <span>Ricerca</span>
+        </button>
+        <button class="nav-tab" id="btn-apri-istruzioni">
+            <span class="tab-icon">❓</span>
+            <span>Guida</span>
+        </button>
+    </nav>
+
+    <!-- MODALE SELEZIONE LISTA TORNEI -->
     <div class="modal-overlay" id="modal-lista">
         <div class="modal-content">
             <div class="modal-header-container">
@@ -631,6 +615,7 @@
         </div>
     </div>
 
+    <!-- MODALE GUIDA ISTRUZIONI -->
     <div class="modal-overlay" id="modal-istruzioni">
         <div class="modal-content" style="max-width: 500px;">
             <h3>Guida Sincronizzazione Sessione</h3>
@@ -676,7 +661,7 @@
         const tabellaScrollContainer = document.querySelector('.tabella-scroll-container');
         const mappaContainer = document.getElementById('mappa-container');
         
-        // Nuovi Pulsanti Ricerca "Lista" e "Mappa"
+        // Pulsanti Ricerca "Lista" e "Mappa"
         const btnRicercaLista = document.getElementById('btn-ricerca-lista');
         const btnRicercaMappa = document.getElementById('btn-ricerca-mappa');
         
@@ -686,19 +671,19 @@
         const filtroCategoria = document.getElementById('filtro-categoria');
         const filtroEta = document.getElementById('filtro-eta');
 
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAwKmBrHvgI1TJZjAUNI3xH9M-UYkIJFZPBY3oXDk1c87jw0AtsHVkhAO1jbAJiwQb/exec";
-        //"https://script.google.com/macros/s/AKfycbyADQxPLnMqwA7rJAx10jV4oyqON6a2v6C2zlAScsmfc9UCtedHNsqBCk_UKAafaO3Q/exec";
-        //"https://script.google.com/macros/s/AKfycbzvZzwdhvX8rKdoRV4f88cZUV8qjn2oGRASu3J_U6BsmTEPTZFOaZLWnUKc-xreFni-/exec";
-        //"https://script.google.com/macros/s/AKfycbyj-BpKbUJ-hIqdWP-eb1PbqtjVnZRGpVSq3EskQBXzXXef5CG2np4RUpPn2zCpZ-1X/exec";
-        //"https://script.google.com/macros/s/AKfycbywNq9JKR_l8QS9j29GTIXAUVG48ZTkjbF8z2KUZz927BQp5MZ_C_sjATUwaMP67SJX/exec";
+        // Riferimenti generali Bottom Tab Navigazione
+        const tabMieiTornei = document.getElementById('btn-miei-tornei');
+        const btnRicercaLente = document.getElementById('btn-ricerca-lente');
 
-        // --- POPUP ISTRUZIONI INTEGRATE ---
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAwKmBrHvgI1TJZjAUNI3xH9M-UYkIJFZPBY3oXDk1c87jw0AtsHVkhAO1jbAJiwQb/exec";
+
+        // --- POPUP ISTRUZIONI INTEGRATE (GESTIONE TAB ?) ---
         const modalIstruzioni = document.getElementById('modal-istruzioni');
         document.getElementById('btn-apri-istruzioni').addEventListener('click', () => modalIstruzioni.style.display = 'flex');
         document.getElementById('btn-istruzioni-chiudi').addEventListener('click', () => modalIstruzioni.style.display = 'none');
 
         // --- ASSOCIAZIONE FUNZIONI AI BOTTONI DI NAVIGAZIONE ---
-        document.getElementById('btn-miei-tornei').addEventListener('click', myTournaments);
+        tabMieiTornei.addEventListener('click', myTournaments);
 
         // --- ABILITAZIONE TASTO CHIUDI POPUP ---
         const modalLista = document.getElementById('modal-lista');
@@ -751,29 +736,26 @@
         let torneoAttivo = listaTornei.find(t => t.id_locale === attivoIdLocale) || listaTornei[0];
         
 
-        // CONTROLLO TORNEO NEL PASSATO: Nascondi bottoni data (Ieri, Oggi, Domani, Dopodomani)
+        // CONTROLLO TORNEO NEL PASSATO: Nascondi bottoni data
         if (torneoAttivo && torneoAttivo.dataFine) {
-            // Trasforma la data fine nel formato GG/MM/AAAA in un oggetto Date confrontabile
             const partiData = torneoAttivo.dataFine.split('/');
             if (partiData.length === 3) {
                 const giornoFine = parseInt(partiData[0], 10);
-                const meseFine = parseInt(partiData[1], 10) - 1; // I mesi in JS partono da 0
+                const meseFine = parseInt(partiData[1], 10) - 1; 
                 const annoFine = parseInt(partiData[2], 10);
                 
                 const dataFineTorneo = new Date(annoFine, meseFine, giornoFine, 23, 59, 59);
                 const oggi = new Date();
                 
-                // Se la data di fine è strettamente antecedente a oggi, nascondiamo la toolbar dei bottoni data
                 if (dataFineTorneo < oggi) {
                     toolbarDate.style.display = 'none';
                 } else {
-                    toolbarDate.style.display = 'flex'; // Ripristina se il torneo è attivo/futuro
+                    toolbarDate.style.display = 'flex'; 
                 }
             }
         } else {
             toolbarDate.style.display = 'flex';
         }
-
 
         if(torneoAttivo) {
             attivoIdLocale = torneoAttivo.id_locale;
@@ -788,7 +770,6 @@
                 if (!str) return null;
                 const parti = str.split('/');
                 if (parti.length === 3) {
-                    // Imposta l'oggetto Date a mezzanotte per i confronti precisi sui giorni
                     return new Date(parseInt(parti[2], 10), parseInt(parti[1], 10) - 1, parseInt(parti[0], 10), 0, 0, 0);
                 }
                 return null;
@@ -797,28 +778,23 @@
             const dataInizio = parseDataITA(torneoAttivo.dataInizio);
             const dataFine = parseDataITA(torneoAttivo.dataFine);
             
-            // Data corrente azzerata nelle ore per un confronto corretto sul giorno
             const oggi = new Date();
             oggi.setHours(0, 0, 0, 0);
 
             if (dataFine && dataFine < oggi) {
-                // Torneo concluso -> Grigio
                 btnCambiaTorneo.style.backgroundColor = "#6c757d";
                 btnCambiaTorneo.style.borderColor = "#6c757d";
                 btnCambiaTorneo.style.color = "#ffffff";
             } else if (dataInizio && dataInizio <= oggi && dataFine && dataFine >= oggi) {
-                // Torneo in corso -> Verde
                 btnCambiaTorneo.style.backgroundColor = "#28a745";
                 btnCambiaTorneo.style.borderColor = "#28a745";
                 btnCambiaTorneo.style.color = "#ffffff";
             } else if (dataInizio && dataInizio > oggi) {
-                // Torneo futuro -> Blu istituzionale / Azzurro
                 btnCambiaTorneo.style.backgroundColor = "#007bff";
                 btnCambiaTorneo.style.borderColor = "#007bff";
                 btnCambiaTorneo.style.color = "#ffffff";
             }
         } else {
-            // Stato di default se nessun torneo è selezionato (ripristina lo stile CSS originario)
             btnCambiaTorneo.style.backgroundColor = ""; 
             btnCambiaTorneo.style.borderColor = "";
             btnCambiaTorneo.style.color = "";
@@ -831,7 +807,7 @@
 
         if (COMPETITION_ID) {
             btnSitoFitp.href = `https://www.fitp.it/Tornei/Dettaglio-Competizione?competitionId=${COMPETITION_ID}`;
-            btnSitoFitp.style.display = "inline-flex";
+            btnSitoFitp.style.display = "flex";
         } else {
             btnSitoFitp.style.display = "none";
         }
@@ -1000,7 +976,6 @@
 
                         nuovaLista.push({
                             id_locale: String(Date.now() + Math.random()),
-//                            tennisClub: t.TennisClub || "",
                             tennisClub: cleanName(t.TennisClub || ""),
                             nome: t.Description || "", 
                             descrizioneTorneo: t.descrizioneTorneo,
@@ -1137,8 +1112,10 @@
             });
         }
 
-        // --- FUNZIONI DI NAVIGAZIONE CON LOGICA DI VISIBILITÀ ---
+        // --- FUNZIONI DI NAVIGAZIONE CON LOGICA DI VISIBILITÀ E STATO ACTIVE TAB ---
         function myTournaments() {
+            btnRicercaLente.classList.remove('attivo');
+            tabMieiTornei.classList.add('attivo');
             areaRicerca.style.display = 'none';
             areaTorneo.style.display = 'flex';
         }
@@ -1149,13 +1126,11 @@
 
         let map = null;
         let mapMarkers = [];
-        let torneiAttiviRicerca = []; // Salva l'elenco filtrato per la mappa
+        let torneiAttiviRicerca = []; 
 
-        // Stato dell'ordinamento della tabella di ricerca
         let colonnaOrdinamentoAttiva = "";
         let direzioneOrdinamentoAsc = true;
 
-        // Funzione per convertire le stringhe data "GG/MM/AAAA" in oggetti Date ordinabili
         function parsingDataItaliana(stringaData) {
             if (!stringaData) return new Date(0);
             const parti = stringaData.split('/');
@@ -1165,13 +1140,11 @@
             return new Date(0);
         }
 
-        // Gestore del click sulle intestazioni per l'ordinamento
         document.querySelectorAll('.tabella-risultati thead th').forEach(th => {
             th.addEventListener('click', () => {
                 const colonna = th.getAttribute('data-colonna');
                 if (!colonna || torneiAttiviRicerca.length === 0) return;
 
-                // Se clicchiamo sulla stessa colonna invertiamo la direzione, altrimenti ricomincia da ascendente
                 if (colonnaOrdinamentoAttiva === colonna) {
                     direzioneOrdinamentoAsc = !direzioneOrdinamentoAsc;
                 } else {
@@ -1179,37 +1152,31 @@
                     direzioneOrdinamentoAsc = true;
                 }
 
-                // Aggiorna le freccette visive (▲ o ▼)
                 document.querySelectorAll('.tabella-risultati thead th span').forEach(span => span.innerText = "");
                 const spanIcona = th.querySelector('span');
                 if (spanIcona) {
                     spanIcona.innerText = direzioneOrdinamentoAsc ? " ▲" : " ▼";
                 }
 
-                // Esegui il sorting dell'array in base al tipo di campo
                 torneiAttiviRicerca.sort((a, b) => {
                     let valA = a[colonna] ? String(a[colonna]).trim().toLowerCase() : "";
                     let valB = b[colonna] ? String(b[colonna]).trim().toLowerCase() : "";
 
-                    // Ordinamento speciale se si tratta di campi data
                     if (colonna === 'dataInizio' || colonna === 'dataFine') {
                         const dataA = parsingDataItaliana(a[colonna]);
                         const dataB = parsingDataItaliana(b[colonna]);
                         return direzioneOrdinamentoAsc ? dataA - dataB : dataB - dataA;
                     }
 
-                    // Ordinamento alfabetico standard per gli altri campi stringa
                     if (valA < valB) return direzioneOrdinamentoAsc ? -1 : 1;
                     if (valA > valB) return direzioneOrdinamentoAsc ? 1 : -1;
                     return 0;
                 });
 
-                // Ridisegna la tabella con i dati ordinati
                 popolaTabellaRicerca(torneiAttiviRicerca);
             });
         });
 
-        // Gestione Bottoni Lista/Mappa
         btnRicercaLista.addEventListener('click', () => {
             btnRicercaMappa.classList.remove('attivo');
             btnRicercaLista.classList.add('attivo');
@@ -1225,8 +1192,40 @@
             showMap();
         });
 
-        // Inizializza la mappa
         function showMap() {
+            if (!map) {
+                // Centra la mappa su Torino
+                map = L.map('mappa-container').setView([45.0703, 7.6869], 9);
+                
+                // 1. Definisci il layer Mappa Standard (OpenStreetMap)
+                const mappaStandard = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                });
+
+                // 2. Definisci il layer Vista Satellitare (Esri World Imagery)
+                const vistaSatellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                });
+
+                // Di default, aggiungi la mappa standard come livello base iniziale
+                mappaStandard.addTo(map);
+
+                // 3. Configura il controller dei livelli in alto a destra
+                const baseMaps = {
+                    "Mappa Stradale": mappaStandard,
+                    "Vista Satellitare": vistaSatellite
+                };
+
+                L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
+            }
+            
+            setTimeout(() => {
+                map.invalidateSize();
+                posizionaMarkerTornei();
+            }, 100);
+        }
+        
+        function OLDshowMap() {
             if (!map) {
                 map = L.map('mappa-container').setView([45.0703, 7.6869], 9);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -1240,15 +1239,12 @@
             }, 100);
         }
 
-        // Geocodifica con l'API Photon di Komoot raggruppando per singolo indirizzo/circolo (con filtro Categoria e marker rossi)
         async function posizionaMarkerTornei() {
-            // Pulisce i vecchi marker
             mapMarkers.forEach(m => map.removeLayer(m));
             mapMarkers = [];
 
             if (torneiAttiviRicerca.length === 0) return;
 
-            // Definiamo l'icona rossa personalizzata per gli indirizzi non validi/mancanti
             const iconaRossa = new L.Icon({
                 iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
                 shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -1258,32 +1254,26 @@
                 shadowSize: [41, 41]
             });
 
-            // Recupera la categoria attualmente selezionata nel filtro del frontend
             const catSelezionata = filtroCategoria.value;
             const etaSelezionata = filtroEta.value;
 
-            // Raggruppa i tornei per Indirizzo + Città (Locazione specifica)
             const torneiPerLocazione = {};
             
             torneiAttiviRicerca.forEach(t => {
-                // 1. Filtro per genere femminile precedentemente configurato
                 if (!t.tipoTorneo || !t.tipoTorneo.toLowerCase().includes("femminile")) {
                     return;
                 }
 
-                // 2. NUOVO FILTRO CATEGORIA PER I MARKER (CON GESTIONE SPECIALE PER CATEGORIA "1")
                 if (catSelezionata !== "Tutte") {
                     const stringaClassifiche = t.catClass || "";
                     
                     if (catSelezionata === "1") {
-                        // Se la categoria cercata è "1", deve iniziare con "1;" oppure essere esattamente "1"
                         if (!stringaClassifiche.startsWith("1;") && stringaClassifiche !== "1") {
-                            return; // Salta il torneo e non inserirlo nel marker sulla mappa
+                            return; 
                         }
                     } else {
-                        // Per tutte le altre categorie va bene il controllo della sottostringa
                         if (!stringaClassifiche.includes(catSelezionata)) {
-                            return; // Salta il torneo e non inserirlo nel marker sulla mappa
+                            return; 
                         }
                     }
                 }
@@ -1298,25 +1288,22 @@
                 const stringaIndirizzo = haIndirizzoValido ? t.indirizzo.trim() : "-";
                 const stringaCitta = t.citta ? t.citta.trim() : "Torino";
                 
-                // Genera una chiave univoca combinando indirizzo e città
                 const chiaveLocazione = `${stringaIndirizzo}_${stringaCitta}`.toUpperCase();
                 
                 if (!torneiPerLocazione[chiaveLocazione]) {
                     torneiPerLocazione[chiaveLocazione] = {
                         nomeCitta: stringaCitta,
                         indirizzo: stringaIndirizzo,
-                        isGenericoCitta: !haIndirizzoValido, // Flag per ricordarci se stiamo geocodificando solo la città
+                        isGenericoCitta: !haIndirizzoValido, 
                         lista: []
                     };
                 }
                 torneiPerLocazione[chiaveLocazione].lista.push(t);
             });
 
-            // Geocodifica ogni locazione con Photon di Komoot
             for (const chiave in torneiPerLocazione) {
                 const infoLocazione = torneiPerLocazione[chiave];
                 try {
-                    // Se l'indirizzo è "-", cerchiamo solo la città, altrimenti cerchiamo l'indirizzo esatto
                     let querySearch = "";
                     if (infoLocazione.isGenericoCitta) {
                         querySearch = `${infoLocazione.nomeCitta}, Piemonte, Italia`;
@@ -1329,11 +1316,9 @@
                     
                     if (datiGeocode && datiGeocode.features && datiGeocode.features.length > 0) {
                         const coordinate = datiGeocode.features[0].geometry.coordinates;
-                        // Nota: GeoJSON di Photon restituisce prima la longitudine [lon, lat]
                         const lon = coordinate[0];
                         const lat = coordinate[1];
 
-                        // Popup HTML con i dettagli dei tornei per questa specifica locazione
                         let popupHTML = `<div style="font-family: Arial, sans-serif; font-size: 12px; max-height: 200px; overflow-y:auto; min-width: 220px;">`;
                         
                         if (infoLocazione.isGenericoCitta) {
@@ -1358,7 +1343,6 @@
                         });
                         popupHTML += `</div>`;
 
-                        // Configura il marker: se la posizione è approssimativa sulla città, usa l'icona rossa
                         const opzioniMarker = infoLocazione.isGenericoCitta ? { icon: iconaRossa } : {};
                         
                         const marker = L.marker([lat, lon], opzioniMarker).addTo(map).bindPopup(popupHTML);
@@ -1374,23 +1358,18 @@
         filtroStato.addEventListener('change', search);
         btnAttivaRicerca.addEventListener('click', search);
 
-        // Aggiorna istantaneamente la tabella quando l'utente cambia Categoria
         filtroCategoria.addEventListener('change', () => {
             if (typeof torneiAttiviRicerca !== 'undefined' && torneiAttiviRicerca.length > 0) {
                 popolaTabellaRicerca(torneiAttiviRicerca);
-                
-                // Se hai implementato la mappa, aggiorna anche i marker
                 if (btnRicercaMappa.classList.contains('attivo') && typeof posizionaMarkerTornei === 'function') {
                     posizionaMarkerTornei();
                 }
             }
         });
 
-        // Aggiorna istantaneamente la tabella e i marker quando si cambia l'Età
         filtroEta.addEventListener('change', () => {
             if (typeof torneiAttiviRicerca !== 'undefined' && torneiAttiviRicerca.length > 0) {
                 popolaTabellaRicerca(torneiAttiviRicerca);
-                
                 if (btnRicercaMappa.classList.contains('attivo') && typeof posizionaMarkerTornei === 'function') {
                     posizionaMarkerTornei();
                 }
@@ -1398,15 +1377,11 @@
         });
 
         async function getTournementAddressList(tornei) {
-            // 1. Legge la cache esistente dal localStorage (o crea un oggetto vuoto se non esiste)
             let cacheIndirizzi = JSON.parse(localStorage.getItem('cache_indirizzi_tornei')) || {};
-
-            // 2. Trova quali ID mancano nella cache
             const idsMancanti = tornei
                 .map(t => t.id_competizione || t.competitionUid)
-                .filter(id => id && !cacheIndirizzi[id]); // Solo ID validi e NON presenti in cache
+                .filter(id => id && !cacheIndirizzi[id]);
 
-            // 3. Se ci sono ID mancanti, interroga il backend
             if (idsMancanti.length > 0) {
                 console.log(`Indirizzi mancanti in cache: ${idsMancanti.length}. Richiesta al backend in corso...`);
                 const stringaIdsMancanti = idsMancanti.join(",");
@@ -1417,9 +1392,7 @@
                     const data = await response.json();
                     
                     if (data.success && data.indirizzi) {
-                        // Unisce i nuovi indirizzi ricevuti alla cache esistente
                         cacheIndirizzi = { ...cacheIndirizzi, ...data.indirizzi };
-                        // Salva la cache aggiornata nel localStorage
                         localStorage.setItem('cache_indirizzi_tornei', JSON.stringify(cacheIndirizzi));
                         console.log("Cache localStorage aggiornata con i nuovi indirizzi.");
                     } else {
@@ -1428,46 +1401,23 @@
                 } catch (err) {
                     console.error("Errore di rete durante il recupero degli indirizzi:", err);
                 }
-            } else {
-                console.log("Tutti gli indirizzi dei tornei sono già presenti in localStorage!");
             }
 
-            // 4. Inietta il campo 'indirizzo' all'interno di ciascun record del torneo originale
             tornei.forEach(t => {
                 const id = t.id_competizione || t.competitionUid;
-                t.indirizzo = cacheIndirizzi[id] || "-"; // Assegna l'indirizzo della cache o un fallback
+                t.indirizzo = cacheIndirizzi[id] || "-";
             });
 
             return tornei;
         }
 
-        function OLDgetTournementAddressList(stringaIdsPerBackend) {
-            if (!stringaIdsPerBackend) {
-                console.warn("Nessun ID competizione fornito per il recupero degli indirizzi.");
-                return;
-            }
-
-            const url = `${GOOGLE_SCRIPT_URL}?action=getAddresses&competitionIds=${encodeURIComponent(stringaIdsPerBackend)}`;
-
-            fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log("Mappa degli indirizzi ricevuta:", data.indirizzi);
-                    // Esempio di utilizzo: data.indirizzi["ID_COMPETIZIONE"] ti darà la via
-                } else {
-                    console.error("Errore nel recupero:", data);
-                }
-            })
-            .catch(err => console.error("Errore di rete:", err));
-        }
-
         function search() {
-            // Riferimento al loader globale
             const loaderGlobale = document.getElementById('loader-globale');
-            
-            // Mostra il loader globale bloccando l'interfaccia
             loaderGlobale.style.display = 'flex';
+
+            // Gestione Tab Attivo su Bottom Bar
+            tabMieiTornei.classList.remove('attivo');
+            btnRicercaLente.classList.add('attivo');
 
             areaTorneo.style.display = 'none';
             areaRicerca.style.display = 'flex';
@@ -1500,30 +1450,17 @@
             const stato = `&id_stato=${statoSelezionato}`;
             const dataInizio = `&data_inizio=${dataFormattata}`;
             const address = '&address=0';
-//            const urlRicerca = `${GOOGLE_SCRIPT_URL}?action=search&id_regione=19${stato}${dataInizio}`; // Sicilia
             const urlRicerca = `${GOOGLE_SCRIPT_URL}?action=search&id_regione=1&id_provincia=201${stato}${dataInizio}${address}`;
 
             fetch(urlRicerca)
             .then(response => response.json())
             .then(async (data) => {
                 if (data.success) {
-                    console.log("Ecco i tornei trovati:", data.risultati);
-
                     const tuttiITornei = data.results || data.risultati || [];
-
-                    // --- INTEGRAZIONE CACHE INDIRIZZI ---
-                    // Questa funzione controllerà il localStorage, scaricherà i mancanti 
-                    // e aggiungerà la proprietà .indirizzo a ogni torneo
                     await getTournementAddressList(tuttiITornei);
-                    // ------------------------------------
-
-                    // Ora che gli indirizzi sono iniettati nei record, filtriamo per il femminile
                     torneiAttiviRicerca = tuttiITornei.filter(t => t.tipoTorneo && t.tipoTorneo.toLowerCase().includes("femminile"));
-                    
-                    // Popola la tabella (che ora leggerà correttamente t.indirizzo all'interno di ogni record)
                     popolaTabellaRicerca(torneiAttiviRicerca);
 
-                    // Se la vista attiva è la mappa, rigenera i marker ora che i dati sono pronti
                     if (btnRicercaMappa.classList.contains('attivo')) {
                         await posizionaMarkerTornei();
                     }
@@ -1547,7 +1484,6 @@
                 `;
             })
             .finally(() => {
-                // Rimuove il loader in ogni caso (successo o fallimento) quando l'operazione è terminata
                 loaderGlobale.style.display = 'none';
             });
         }
@@ -1556,42 +1492,36 @@
             tabularRisultatiBody.innerHTML = "";
             let contatoreInseriti = 0;
             
-            // Recupera la categoria selezionata dal filtro
             const catSelezionata = filtroCategoria.value;
             const etaSelezionata = filtroEta.value;
 
             listaTorneiTrovati.forEach(t => {
-                // Filtro per genere femminile precedentemente configurato
                 if (!t.tipoTorneo || !t.tipoTorneo.toLowerCase().includes("femminile")) {
                     return;
                 }
 
-                // FILTRO CATEGORIA PER LA TABELLA CON GESTIONE SPECIALE PER LA PRIMA CATEGORIA
                 if (catSelezionata !== "Tutte") {
                     const stringaClassifiche = t.catClass || "";
                     
                     if (catSelezionata === "1") {
-                        // Se la categoria cercata è "1", deve iniziare con "1;" oppure essere esattamente "1"
                         if (!stringaClassifiche.startsWith("1;") && stringaClassifiche !== "1") {
-                            return; // Salta il torneo
+                            return; 
                         }
                     } else {
-                        // Per tutte le altre categorie (es. 2.1, 3.5) va bene il controllo della sottostringa
                         if (!stringaClassifiche.includes(catSelezionata)) {
-                            return; // Salta il torneo se la classifica non combacia
+                            return; 
                         }
                     }
                 }
                 if (etaSelezionata !== "Tutte") {
                     const stringaEta = t.catEta || "";
                     if (!stringaEta.includes(etaSelezionata)) {
-                        return; // Salta il torneo se non contiene la stringa d'età selezionata
+                        return; 
                     }
                 }
 
                 contatoreInseriti++;
 
-                // Logica per la semplificazione dell'Età
                 let etaSemplificata = "-";
                 if (t.catEta) {
                     const partiEta = t.catEta.split(';').map(s => s.trim()).filter(s => s !== "");
@@ -1632,13 +1562,11 @@
                 tabularRisultatiBody.appendChild(tr);
             });
 
-            // Aggiornamento dinamico del contatore nel titolo
             const elContatore = document.getElementById('contatore-titolo-tornei');
             if (elContatore) {
                 elContatore.innerText = contatoreInseriti > 0 ? `${contatoreInseriti} ` : "0 ";
             }
 
-            // Gestione della tabella vuota post-filtraggio
             if (contatoreInseriti === 0) {
                 tabularRisultatiBody.innerHTML = `
                     <tr>
